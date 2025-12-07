@@ -68,8 +68,8 @@ export function CourseProjects() {
                 {projects.map((project, idx) => (
                     <div key={project.id} className="group relative bg-transparent h-full flex flex-col rounded-3xl isolate">
 
-                        {/* 1. Animated Gradient Border (Behind) */}
-                        <div className="absolute -inset-[2px] rounded-3xl overflow-hidden z-0">
+                        {/* 1. Animated Gradient Border (Behind) - THIN 1PX */}
+                        <div className="absolute -inset-[1px] rounded-[25px] overflow-hidden z-0">
                             {/* The rotating gradient layer */}
                             <div
                                 className="animated-border-bg absolute top-[-50%] left-[-50%] w-[200%] h-[200%] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
@@ -79,8 +79,8 @@ export function CourseProjects() {
                             />
                         </div>
 
-                        {/* 2. Main Card Content (Foreground) */}
-                        <div className="relative z-10 bg-white h-full p-8 rounded-3xl border border-slate-200 group-hover:border-transparent transition-colors flex flex-col">
+                        {/* 2. Main Card Content (Foreground) - Matches border radius */}
+                        <div className="relative z-10 bg-white h-full p-8 rounded-[24px] border border-slate-200 group-hover:border-transparent transition-colors flex flex-col">
                             <div className={`w-12 h-12 bg-slate-50 border border-slate-100 flex items-center justify-center mb-6 rounded-2xl`}>
                                 <project.icon className={`w-6 h-6 text-slate-900 transition-colors`} />
                             </div>
