@@ -2,13 +2,14 @@
 
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { productSchema, ProductFormValues } from '@/schemas/product.schema';
+import { productSchema, ProductFormValues } from './productFormSchema';
 import { Button } from '@/components/ui/button';
 import {
   Form,
 } from '@/components/ui/form';
 import { useEffect } from 'react';
-import { CustomFormField } from './CustomFormField';
+import { CustomFormField } from '@/components/forms/CustomFormField';
+import { Loader2 } from 'lucide-react';
 
 interface ProductFormProps {
   initialData?: ProductFormValues;
@@ -86,7 +87,14 @@ export function ProductForm({ initialData, onSubmit, onCancel, isLoading }: Prod
             Cancel
           </Button>
           <Button type="submit" className="bg-emerald-600 hover:bg-emerald-700" disabled={isLoading}>
-            {isLoading ? 'Saving...' : 'Save'}
+            {isLoading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Saving...
+              </>
+            ) : (
+              'Save'
+            )}
           </Button>
         </div>
       </form>

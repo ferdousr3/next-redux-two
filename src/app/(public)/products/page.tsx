@@ -7,17 +7,19 @@ import {
   createProduct,
   updateProduct,
   deleteProduct,
+} from '@/lib/product/state/productActions'
+import {
   setSelectedProduct,
   setQuery
-} from '@/lib/features/products/slice'
+} from '@/lib/product/state/productReducer'
 import type { RootState, AppDispatch } from '@/store/store'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import { ProductForm } from '@/components/forms/ProductForm'
+import { ProductForm } from '@/lib/product/ProductForm'
 import { Plus, Edit, Trash2, Search, Lock, LogIn, Loader2 } from 'lucide-react'
-import { Product } from '@/types/product'
+import { Product } from '@/lib/product/model/product.model'
 import Link from 'next/link'
 import { toast } from 'sonner'
 import { DeleteConfirmDialog } from '@/components/shared/ConfirmDialog'
@@ -25,7 +27,7 @@ import { PageLoading } from '@/components/shared/Loading'
 
 export default function ProductsPage() {
   const dispatch = useDispatch<AppDispatch>()
-  const { products, loading, selectedProduct, deleting, initialized } = useSelector(
+  const { products, loading, creating, updating, selectedProduct, deleting, initialized } = useSelector(
     (state: RootState) => state.products
   )
   const { user, isAuthenticated } = useSelector((state: RootState) => state.auth)
@@ -153,14 +155,14 @@ export default function ProductsPage() {
                 <ProductForm
                   initialData={selectedProduct ? {
                     name: selectedProduct.name,
-                    price: selectedProduct.price,
+                    price: parseFloat(selectedProduct.price),
                     stock: selectedProduct.stock,
                     image: selectedProduct.image || '',
                     description: selectedProduct.description || ''
                   } : undefined}
                   onSubmit={handleSubmit}
                   onCancel={() => handleDialogClose(false)}
-                  isLoading={loading}
+                  isLoading={creating || updating}
                 />
               </DialogContent>
             </Dialog>
@@ -179,7 +181,7 @@ export default function ProductsPage() {
         {products.map((product) => {
           const canModify = canModifyProduct(product)
           return (
-            <Card key={product.id} className="hover:shadow-lg transition-shadow overflow-hidden group">
+            <Card key={product.id} className="transition-shadow overflow-hidden group">
               <div className="aspect-square bg-slate-100 relative">
                 {product.image ? (
                   <img

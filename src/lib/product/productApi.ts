@@ -1,5 +1,5 @@
 import { httpClient } from '@/lib/http-client'
-import { Product, ProductInput, ProductQuery } from '@/types/product'
+import { Product, ProductInput, ProductQuery } from './model/product.model'
 
 export class ProductApiService {
    private baseUrl = '/v1/products'

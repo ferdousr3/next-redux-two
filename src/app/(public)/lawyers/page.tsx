@@ -77,7 +77,7 @@ export default function LawyersPage() {
         {lawyers.map((lawyer) => (
           <Card
             key={lawyer.id}
-            className="overflow-hidden hover:shadow-lg transition-shadow"
+            className="overflow-hidden transition-shadow"
           >
             <div className="h-32 bg-muted relative">
               {/* Placeholder for cover image */}

@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/form';
 import { useEffect } from 'react';
 import { CustomFormField } from './CustomFormField';
+import { Loader2 } from 'lucide-react';
 
 interface PostFormProps {
   initialData?: PostFormValues;
@@ -57,7 +58,14 @@ export function PostForm({ initialData, onSubmit, onCancel, isLoading }: PostFor
             Cancel
           </Button>
           <Button type="submit" className="bg-emerald-600 hover:bg-emerald-700" disabled={isLoading}>
-            {isLoading ? 'Saving...' : 'Save'}
+            {isLoading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Saving...
+              </>
+            ) : (
+              'Save'
+            )}
           </Button>
         </div>
       </form>

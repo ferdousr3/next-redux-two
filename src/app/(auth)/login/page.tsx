@@ -14,7 +14,7 @@ import { AppDispatch, RootState } from '@/store/store';
 import { login, clearError } from '@/lib/features/auth/slice';
 import { toast } from 'sonner';
 import { useEffect, useState } from 'react';
-import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, Loader2 } from 'lucide-react';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -124,10 +124,10 @@ export default function LoginPage() {
               </div>
               <Button type="submit" className="w-full" disabled={loading}>
                 {loading ? (
-                  <span className="flex items-center gap-2">
-                    <span className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    Signing in...
-                  </span>
+                    <span className="flex items-center gap-2">
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        Signing in...
+                    </span>
                 ) : (
                   'Sign in'
                 )}

@@ -106,18 +106,50 @@ const postSlice = createSlice({
    },
    extraReducers: (builder) => {
       builder
+         // Fetch All
+         .addCase(fetchPosts.pending, (state) => {
+            state.loading = true
+            state.error = null
+         })
          .addCase(fetchPosts.fulfilled, (state, action) => {
             state.loading = false
             state.posts = action.payload
             state.initialized = true
          })
+         .addCase(fetchPosts.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.payload as string
+         })
+         // Fetch One
+         .addCase(fetchPost.pending, (state) => {
+            state.loading = true
+            state.error = null
+         })
          .addCase(fetchPost.fulfilled, (state, action) => {
             state.loading = false
             state.selectedPost = action.payload
          })
+         .addCase(fetchPost.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.payload as string
+         })
+         // Create
+         .addCase(createPost.pending, (state) => {
+            state.creating = true
+            state.error = null
+         })
          .addCase(createPost.fulfilled, (state, action) => {
             state.creating = false
             state.posts = [action.payload, ...state.posts]
+         })
+         .addCase(createPost.rejected, (state, action) => {
+            state.creating = false
+            state.error = action.payload as string
+         })
+         // Update
+         .addCase(updatePost.pending, (state) => {
+            state.updating = true
+            state.error = null
          })
          .addCase(updatePost.fulfilled, (state, action) => {
             state.updating = false
@@ -126,11 +158,23 @@ const postSlice = createSlice({
                state.posts[index] = action.payload
             }
          })
+         .addCase(updatePost.rejected, (state, action) => {
+            state.updating = false
+            state.error = action.payload as string
+         })
+         // Delete
+         .addCase(deletePost.pending, (state, action) => {
+            state.deleting = action.meta.arg
+            state.error = null
+         })
          .addCase(deletePost.fulfilled, (state, action) => {
             state.deleting = null
             state.posts = state.posts.filter((p) => p.id !== action.payload)
          })
-      // Add pending/rejected cases as needed...
+         .addCase(deletePost.rejected, (state, action) => {
+            state.deleting = null
+            state.error = action.payload as string
+         })
    },
 })
 

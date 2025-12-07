@@ -20,8 +20,8 @@ export function ServicesSection() {
 
           <div className="grid md:grid-cols-3 gap-6">
             {/* Card 1 */}
-            <div className="group p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:border-emerald-500/30 hover:shadow-xl hover:shadow-emerald-500/5 transition-all duration-300">
-              <div className="w-10 h-10 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-emerald-700 mb-6 shadow-sm group-hover:scale-110 transition-transform">
+            <div className="group p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:border-emerald-500/30 transition-all duration-300">
+              <div className="w-10 h-10 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-emerald-700 mb-6 group-hover:scale-110 transition-transform">
                 <Briefcase className="w-5 h-5" strokeWidth={1.5} />
               </div>
               <h3 className="text-lg font-medium text-slate-900 mb-2">
@@ -34,8 +34,8 @@ export function ServicesSection() {
             </div>
 
             {/* Card 2 */}
-            <div className="group p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:border-emerald-500/30 hover:shadow-xl hover:shadow-emerald-500/5 transition-all duration-300">
-              <div className="w-10 h-10 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-emerald-700 mb-6 shadow-sm group-hover:scale-110 transition-transform">
+            <div className="group p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:border-emerald-500/30 transition-all duration-300">
+              <div className="w-10 h-10 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-emerald-700 mb-6 group-hover:scale-110 transition-transform">
                 <ShieldCheck className="w-5 h-5" strokeWidth={1.5} />
               </div>
               <h3 className="text-lg font-medium text-slate-900 mb-2">
@@ -48,8 +48,8 @@ export function ServicesSection() {
             </div>
 
             {/* Card 3 */}
-            <div className="group p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:border-emerald-500/30 hover:shadow-xl hover:shadow-emerald-500/5 transition-all duration-300">
-              <div className="w-10 h-10 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-emerald-700 mb-6 shadow-sm group-hover:scale-110 transition-transform">
+            <div className="group p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:border-emerald-500/30 transition-all duration-300">
+              <div className="w-10 h-10 rounded-lg bg-white border border-slate-200 flex items-center justify-center text-emerald-700 mb-6 group-hover:scale-110 transition-transform">
                 <Files className="w-5 h-5" strokeWidth={1.5} />
               </div>
               <h3 className="text-lg font-medium text-slate-900 mb-2">

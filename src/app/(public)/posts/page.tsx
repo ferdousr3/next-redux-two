@@ -13,11 +13,11 @@ import { Post } from '@/types/post'
 import Link from 'next/link'
 import { toast } from 'sonner'
 import { DeleteConfirmDialog } from '@/components/shared/ConfirmDialog'
-import { PageLoading } from '@/components/shared/Loading'
+import { PostListSkeleton } from '@/components/shared/PostSkeleton'
 
 export default function PostsPage() {
   const dispatch = useDispatch<AppDispatch>()
-  const { posts, loading, selectedPost, deleting, initialized } = useSelector((state: RootState) => state.posts)
+  const { posts, loading, creating, updating, selectedPost, deleting, initialized } = useSelector((state: RootState) => state.posts)
   const { user, isAuthenticated } = useSelector((state: RootState) => state.auth)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   // Delete confirmation state
@@ -93,9 +93,7 @@ export default function PostsPage() {
     if (!open) dispatch(setSelectedPost(null))
   }
 
-  if (loading && !initialized) {
-    return <PageLoading message="Loading posts..." />
-  }
+  // Removed simple PageLoading, will handle with Skeleton below
 
   // Determine if we should show authenticated actions
   const showAuthActions = isMounted && isAuthenticated
@@ -126,7 +124,7 @@ export default function PostsPage() {
                 initialData={selectedPost ? { title: selectedPost.title, content: selectedPost.content || '' } : undefined}
                 onSubmit={handleSubmit}
                 onCancel={() => handleDialogClose(false)}
-                isLoading={loading} // passing global loading might be weird if fetching list but good enough
+                isLoading={creating || updating}
               />
             </DialogContent>
           </Dialog>
@@ -140,55 +138,59 @@ export default function PostsPage() {
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {posts.map((post) => {
-          const canModify = canModifyPost(post)
-          return (
-            <Card key={post.id} className="hover:shadow-lg transition-shadow group">
-              <CardHeader>
-                <CardTitle className="line-clamp-2">{post.title}</CardTitle>
-                <CardDescription>
-                  {new Date(post.createdAt).toLocaleDateString()}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground line-clamp-3 mb-4">
-                  {post.content || 'No content'}
-                </p>
+      {loading && !initialized ? (
+        <PostListSkeleton />
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {posts.map((post) => {
+            const canModify = canModifyPost(post)
+            return (
+              <Card key={post.id} className="transition-shadow group">
+                <CardHeader>
+                  <CardTitle className="line-clamp-2">{post.title}</CardTitle>
+                  <CardDescription>
+                    {new Date(post.createdAt).toLocaleDateString()}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground line-clamp-3 mb-4">
+                    {post.content || 'No content'}
+                  </p>
 
-                {/* Only show edit/delete if user is logged in AND owns the post */}
-                {showAuthActions && canModify ? (
-                  <div className="flex gap-2">
-                    <Button size="sm" variant="outline" onClick={() => handleEdit(post)}>
-                      <Edit className="w-4 h-4 mr-1" />
-                      Edit
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="destructive"
-                      onClick={() => handleDeleteClick(post)}
-                      disabled={deleting === post.id}
-                    >
-                      {deleting === post.id ? <Loader2 className="w-4 h-4 animate-spin"/> : <Trash2 className="w-4 h-4 mr-1" />}
-                      Delete
-                    </Button>
-                  </div>
-                ) : showAuthActions ? (
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Lock className="w-4 h-4" />
-                    <span>Not your post</span>
-                  </div>
-                ) : (
-                  <Link href="/login" className="inline-flex items-center gap-2 text-sm text-emerald-600 hover:text-emerald-700">
-                    <LogIn className="w-4 h-4" />
-                    Login to edit
-                  </Link>
-                )}
-              </CardContent>
-            </Card>
-          )
-        })}
-      </div>
+                  {/* Only show edit/delete if user is logged in AND owns the post */}
+                  {showAuthActions && canModify ? (
+                    <div className="flex gap-2">
+                      <Button size="sm" variant="outline" onClick={() => handleEdit(post)}>
+                        <Edit className="w-4 h-4 mr-1" />
+                        Edit
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="destructive"
+                        onClick={() => handleDeleteClick(post)}
+                        disabled={deleting === post.id}
+                      >
+                        {deleting === post.id ? <Loader2 className="w-4 h-4 animate-spin"/> : <Trash2 className="w-4 h-4 mr-1" />}
+                        Delete
+                      </Button>
+                    </div>
+                  ) : showAuthActions ? (
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Lock className="w-4 h-4" />
+                      <span>Not your post</span>
+                    </div>
+                  ) : (
+                    <Link href="/login" className="inline-flex items-center gap-2 text-sm text-emerald-600 hover:text-emerald-700">
+                      <LogIn className="w-4 h-4" />
+                      Login to edit
+                    </Link>
+                  )}
+                </CardContent>
+              </Card>
+            )
+          })}
+        </div>
+      )}
 
       {/* Delete Confirmation Modal */}
       <DeleteConfirmDialog

@@ -23,6 +23,7 @@ import {
   Phone,
   Send,
   Twitter,
+  Loader2,
 } from "lucide-react"
 
 // Define schema locally if not available, or import if I ported it.
@@ -68,7 +69,7 @@ export default function ContactPage() {
     <div className="container py-10 md:py-20">
       <section className="py-24 ">
         <div className="max-w-6xl mx-auto px-6">
-          <div className="bg-white rounded-2xl shadow-xl shadow-slate-200/60 overflow-hidden border border-slate-100 flex flex-col md:flex-row">
+          <div className="bg-white rounded-2xl overflow-hidden border border-slate-100 flex flex-col md:flex-row">
             {/* Contact Info */}
             <div className="md:w-5/12 bg-emerald-900 p-10 text-white flex flex-col justify-between relative overflow-hidden">
               <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-800 rounded-full blur-3xl opacity-50 -translate-y-1/2 translate-x-1/2"></div>
@@ -257,13 +258,23 @@ export default function ContactPage() {
                       )}
                     />
 
-                  <button
+                  <Button
                     type="submit"
-                    className="w-full h-11 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-medium text-sm transition-all shadow-lg flex items-center justify-center gap-2 group"
+                    className="w-full h-11 rounded-lg bg-slate-900 hover:bg-slate-800 text-white font-medium text-sm transition-all flex items-center justify-center gap-2 group"
+                    disabled={form.formState.isSubmitting}
                   >
-                    Send Message
-                    <Send className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                  </button>
+                    {form.formState.isSubmitting ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        Send Message
+                        <Send className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                      </>
+                    )}
+                  </Button>
                 </form>
               </Form>
             </div>

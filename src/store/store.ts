@@ -3,7 +3,7 @@ import authReducer from '@/lib/features/auth/slice'
 import lawyerReducer from '@/lib/features/lawyers/slice'
 import notesReducer from '@/lib/features/notes/slice'
 import postReducer from '@/lib/features/posts/slice'
-import productReducer from '@/lib/features/products/slice'
+import productReducer from '@/lib/product/state/productReducer'
 export const store = configureStore({
    reducer: {
       auth: authReducer,

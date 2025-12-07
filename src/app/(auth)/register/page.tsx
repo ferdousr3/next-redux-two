@@ -14,7 +14,7 @@ import { AppDispatch, RootState } from '@/store/store';
 import { register, clearError } from '@/lib/features/auth/slice';
 import { toast } from 'sonner';
 import { useEffect, useState } from 'react';
-import { Check, X, Eye, EyeOff } from 'lucide-react';
+import { Check, X, Eye, EyeOff, Loader2 } from 'lucide-react';
 
 // Password requirement checker
 function PasswordRequirements({ password }: { password: string }) {
@@ -193,7 +193,14 @@ export default function RegistrationPage() {
                 )}
               />
               <Button type="submit" className="w-full" disabled={loading}>
-                {loading ? 'Creating account...' : 'Create account'}
+                {loading ? (
+                    <span className="flex items-center gap-2">
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        Creating account...
+                    </span>
+                ) : (
+                    'Create account'
+                )}
               </Button>
             </form>
           </Form>

@@ -31,7 +31,7 @@ export function HeroSection() {
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
                 href="/contact"
-                className="h-12 px-6 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-medium text-sm transition-all shadow-lg shadow-emerald-200 flex items-center justify-center gap-2"
+                className="h-12 px-6 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-medium text-sm transition-all flex items-center justify-center gap-2"
               >
                 Schedule Consultation
                 <Calendar className="w-4 h-4" strokeWidth={1.5} />
@@ -55,13 +55,13 @@ export function HeroSection() {
           </div>
           <div className="relative">
             <div className="absolute -inset-1 bg-gradient-to-tr from-emerald-500 to-slate-200 rounded-2xl blur opacity-20"></div>
-            <div className="relative bg-white border border-slate-200 rounded-xl shadow-2xl overflow-hidden">
+            <div className="relative bg-white border border-slate-200 rounded-xl overflow-hidden">
               <div className="h-10 border-b border-slate-100 flex items-center px-4 gap-2 bg-slate-50/50">
                 <div className="flex gap-1.5">
                   <div className="w-2.5 h-2.5 rounded-full bg-slate-300"></div>
                   <div className="w-2.5 h-2.5 rounded-full bg-slate-300"></div>
                 </div>
-                <div className="mx-auto text-[10px] font-medium text-slate-400 bg-white px-3 py-0.5 rounded-md border border-slate-100 shadow-sm">
+                <div className="mx-auto text-[10px] font-medium text-slate-400 bg-white px-3 py-0.5 rounded-md border border-slate-100">
                   veritas-portal.com/dashboard
                 </div>
               </div>

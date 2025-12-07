@@ -7,7 +7,7 @@ import { RootState, AppDispatch } from '@/store/store'
 import { FileText, Package, Users, StickyNote, TrendingUp, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 import { fetchPosts } from '@/lib/features/posts/slice'
-import { fetchProducts } from '@/lib/features/products/slice'
+import { fetchProducts } from '@/lib/product/state/productActions'
 import { fetchLawyers } from '@/lib/features/lawyers/slice'
 import { fetchNotes } from '@/lib/features/notes/slice'
 
@@ -190,7 +190,7 @@ export default function DashboardHome() {
                </CardHeader>
                <CardContent className="space-y-4">
                   <div className="flex items-center gap-4">
-                     <div className="h-16 w-16 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white text-2xl font-bold shadow-lg">
+                     <div className="h-16 w-16 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white text-2xl font-bold">
                         {user?.firstName?.charAt(0).toUpperCase() || 'U'}
                      </div>
                      <div>
