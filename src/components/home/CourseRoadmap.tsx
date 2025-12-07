@@ -1,16 +1,17 @@
 'use client'
 
-import React, { useRef, useState } from 'react'
-import { Sparkles, Code, Database, Server, Globe, Cloudy, Briefcase, CheckCircle2 } from 'lucide-react'
+import React, { useRef, useState, useCallback } from 'react'
+import { Code, Database, Server, Globe, Cloudy, Briefcase, CheckCircle2 } from 'lucide-react'
 
 const steps = [
     {
         id: "01",
         title: "Foundation",
-        subtitle: "The Language of Enterprise",
+        subtitle: "C# & .NET Basics",
         desc: "Master C# syntax, type system, and object-oriented principles. Build a strong base for scalable applications.",
         icon: Code,
         color: "bg-blue-600",
+        // No more isometric shadows needed, using flat/modern shadows
         gradient: "from-blue-600 to-cyan-500",
         lightColor: "bg-blue-50",
         topics: ["C# 12 Features", "LINQ", "Async Programming", "Memory Management"]
@@ -18,7 +19,7 @@ const steps = [
     {
         id: "02",
         title: "Data Mastery",
-        subtitle: "Architecting Persistence",
+        subtitle: "SQL & EF Core",
         desc: "Design complex schemas with SQL Server. Master Entity Framework Core for high-performance data access.",
         icon: Database,
         color: "bg-purple-600",
@@ -30,7 +31,7 @@ const steps = [
     {
         id: "03",
         title: "API Backend",
-        subtitle: "Scalable Services",
+        subtitle: "ASP.NET Core",
         desc: "Build robust REST APIs with ASP.NET Core. Implement enterprise security protocols and dependency injection.",
         icon: Server,
         color: "bg-emerald-600",
@@ -41,7 +42,7 @@ const steps = [
     {
         id: "04",
         title: "Modern Frontend",
-        subtitle: "Interactive UIs",
+        subtitle: "Next.js & React",
         desc: "Create dynamic user experiences with React and Next.js. State management, routing, and component design.",
         icon: Globe,
         color: "bg-orange-600",
@@ -52,7 +53,7 @@ const steps = [
     {
         id: "05",
         title: "DevOps",
-        subtitle: "Cloud Native",
+        subtitle: "Docker & Cloud",
         desc: "Deploy to production with confidence. Master Docker containerization and Azure cloud infrastructure.",
         icon: Cloudy,
         color: "bg-cyan-600",
@@ -63,7 +64,7 @@ const steps = [
     {
         id: "06",
         title: "Career",
-        subtitle: "Get Hired",
+        subtitle: "Placement Info",
         desc: "Translate your skills into a high-paying offer. Mock interviews, resume reviews, and salary negotiation.",
         icon: Briefcase,
         color: "bg-rose-600",
@@ -75,106 +76,126 @@ const steps = [
 
 export function CourseRoadmap() {
   const [activeStep, setActiveStep] = useState(0)
-  const rightColRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
 
-  // Handle Internal Scroll to update Active Step
-  const handleScroll = () => {
-      if (!rightColRef.current) return
+  // Safe Scroll Handler
+  const handleScroll = useCallback(() => {
+      if (!containerRef.current) return
 
-      const { scrollTop, clientHeight } = rightColRef.current
-      const itemHeight = 400 // Approximate height of each item box
-      const centerOffset = clientHeight / 3
+      const { scrollTop, scrollHeight, clientHeight } = containerRef.current
+      if (clientHeight === 0) return
 
-      const index = Math.floor((scrollTop + centerOffset) / itemHeight)
-      const safeIndex = Math.max(0, Math.min(index, steps.length - 1))
+      const scrollableHeight = scrollHeight - clientHeight
+      const progress = Math.max(0, Math.min(1, scrollTop / scrollableHeight))
 
-      if (safeIndex !== activeStep) {
-          setActiveStep(safeIndex)
-      }
-  }
+      const rawIndex = Math.floor(progress * (steps.length + 0.5))
+      const safeIndex = Math.max(0, Math.min(rawIndex, steps.length - 1))
+
+      setActiveStep(safeIndex)
+  }, [])
 
   const ActiveIcon = steps[activeStep].icon
 
   return (
     <section className="bg-white py-12">
-        <div className="max-w-7xl mx-auto px-6">
-             {/* FIXED HEIGHT CONTAINER - REMOVED SHADOW/BORDER */}
-             <div className="rounded-3xl bg-[#fafafa] overflow-hidden h-[800px] flex flex-col lg:flex-row">
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 h-[600px]">
 
-                {/* LEFT COLUMN: FIXED DETAILS */}
-                <div className="w-full lg:w-1/2 p-12 xl:p-20 flex flex-col justify-center bg-white border-b lg:border-b-0 lg:border-r border-slate-50 relative h-[400px] lg:h-auto">
+             {/* LEFT COLUMN: DETAILS */}
+             <div className="flex flex-col justify-center h-full">
+                 <div key={activeStep} className="animate-in fade-in slide-in-from-left-4 duration-500">
+                    <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${steps[activeStep].lightColor} text-sm font-bold tracking-wide uppercase mb-6 w-fit`}>
+                        <ActiveIcon className={`w-4 h-4`} />
+                        <span>Phase {steps[activeStep].id}</span>
+                    </div>
 
-                     <div key={activeStep} className="animate-in fade-in slide-in-from-left-4 duration-500">
-                        <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-full ${steps[activeStep].lightColor} text-sm font-bold tracking-wide uppercase mb-6 w-fit`}>
-                            <ActiveIcon className={`w-4 h-4`} />
-                            <span>Phase {steps[activeStep].id}</span>
-                        </div>
+                    <h2 className={`text-5xl font-black mb-4 tracking-tight bg-gradient-to-r ${steps[activeStep].gradient} bg-clip-text text-transparent`}>
+                        {steps[activeStep].title}
+                    </h2>
+                    <h3 className="text-2xl font-medium text-slate-400 mb-6">
+                        {steps[activeStep].subtitle}
+                    </h3>
 
-                        <h2 className={`text-4xl lg:text-5xl font-black mb-4 tracking-tight bg-gradient-to-r ${steps[activeStep].gradient} bg-clip-text text-transparent`}>
-                            {steps[activeStep].title}
-                        </h2>
-                        <h3 className="text-xl lg:text-2xl font-medium text-slate-400 mb-6">
-                            {steps[activeStep].subtitle}
-                        </h3>
+                    <p className="text-lg text-slate-600 leading-relaxed mb-8">
+                        {steps[activeStep].desc}
+                    </p>
 
-                        <p className="text-lg text-slate-600 leading-relaxed mb-8">
-                            {steps[activeStep].desc}
-                        </p>
-
-                        <div className="grid grid-cols-2 gap-3">
-                            {steps[activeStep].topics.map((topic, i) => (
-                                <div key={i} className="flex items-center gap-2 p-2.5 bg-slate-50 border border-slate-100 rounded-lg">
-                                    <CheckCircle2 className={`w-4 h-4 ${steps[activeStep].color.replace('bg-', 'text-')}`} />
-                                    <span className="font-semibold text-slate-700 text-sm">{topic}</span>
-                                </div>
-                            ))}
-                        </div>
-                     </div>
-
-                </div>
-
-                {/* RIGHT COLUMN: INTERNALLY SCROLLABLE LIST - REMOVED BORDERS */}
-                <div
-                    ref={rightColRef}
-                    onScroll={handleScroll}
-                    className="w-full lg:w-1/2 h-full overflow-y-auto scroll-smooth custom-scrollbar relative px-8 lg:px-16"
-                    style={{ scrollBehavior: 'smooth' }}
-                >
-                     <div className="py-20 space-y-20">
-                        {steps.map((step, idx) => (
-                            <div key={idx} className="h-[400px] flex items-center justify-center transition-all duration-500">
-                                <div
-                                    className={`w-full p-8 transition-all duration-500 cursor-pointer
-                                    ${activeStep === idx
-                                        ? 'opacity-100 scale-110'
-                                        : 'opacity-20 scale-90 grayscale blur-sm'
-                                    }`}
-                                    onClick={() => {
-                                        const el = rightColRef.current?.children[0].children[idx] as HTMLElement
-                                        el?.scrollIntoView({ behavior: 'smooth', block: 'center' })
-                                    }}
-                                >
-                                    <span className={`text-6xl font-black mb-2 block bg-gradient-to-b ${activeStep === idx ? step.gradient : 'from-slate-200 to-slate-200'} bg-clip-text text-transparent`}>
-                                        0{idx + 1}
-                                    </span>
-                                    <h2 className={`text-3xl font-bold ${activeStep === idx ? 'text-slate-900' : 'text-slate-300'}`}>
-                                        {step.title}
-                                    </h2>
-                                    <p className={`${activeStep === idx ? 'text-slate-500' : 'text-slate-200'} mt-2`}>
-                                        {step.subtitle}
-                                    </p>
-                                </div>
+                    <div className="grid grid-cols-2 gap-3">
+                        {steps[activeStep].topics.map((topic, i) => (
+                            <div key={i} className="flex items-center gap-2 p-2.5 bg-slate-50 border border-slate-100 rounded-lg">
+                                <CheckCircle2 className={`w-4 h-4 ${steps[activeStep].color.replace('bg-', 'text-')}`} />
+                                <span className="font-semibold text-slate-700 text-sm">{topic}</span>
                             </div>
                         ))}
-                        <div className="h-[200px]" />
-                     </div>
+                    </div>
+                 </div>
+            </div>
+
+            {/* RIGHT COLUMN: STRAIGHT VERTICAL STACK */}
+            <div
+                ref={containerRef}
+                onScroll={handleScroll}
+                className="relative h-full overflow-y-auto w-full custom-scrollbar flex items-center justify-center bg-slate-50 rounded-3xl"
+            >
+                {/* Scroll Spacer */}
+                <div className="h-[2000px] w-full pointer-events-none absolute top-0" />
+
+                {/* THE STACK CONTAINER */}
+                <div className="sticky top-[50px] w-[320px] lg:w-[380px] h-[500px] flex flex-col items-center">
+
+                        {steps.map((step, idx) => {
+                            const relativeIndex = idx - activeStep
+                            const isActive = idx === activeStep
+                            const isPast = idx < activeStep
+
+                            // Stack Logic: Straight Vertical
+                            return (
+                                <div
+                                    key={idx}
+                                    className={`absolute left-0 right-0 h-[100px] rounded-2xl transition-all duration-500 ease-out border border-white/20
+                                        ${isPast ? 'opacity-0 -translate-y-[200px] scale-90' : 'opacity-100'}
+                                    `}
+                                    style={{
+                                        zIndex: 10 + (steps.length - idx), // 0 on top
+                                        // Vertical Offset: Multiplier * Height
+                                        // If Active: 0px.
+                                        // Next 1: 100px.
+                                        // Next 2: 200px.
+                                        transform: isPast
+                                            ? `translateY(-200px) scale(0.9)`
+                                            : `translateY(${relativeIndex * 85}px) scale(${1 - (relativeIndex * 0.05)})`, // Stack Effect
+                                        top: 0
+                                    }}
+                                >
+                                    {/* The Card Content */}
+                                    <div className={`w-full h-full rounded-2xl bg-gradient-to-r ${step.gradient} flex items-center justify-between px-8 text-white shadow-xl hover:brightness-110 transition-all`}>
+                                        <div className="flex items-center gap-4">
+                                            <span className="text-4xl font-black opacity-40">0{idx + 1}</span>
+                                            <div>
+                                                <h3 className="font-bold text-lg leading-tight">{step.title}</h3>
+                                                <p className="text-xs opacity-70 font-medium uppercase tracking-wider">{step.subtitle}</p>
+                                            </div>
+                                        </div>
+                                        {isActive ? (
+                                            <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm">
+                                                 <step.icon className="w-4 h-4 text-white" />
+                                            </div>
+                                        ) : (
+                                            <div className="w-2 h-2 rounded-full bg-white/40" />
+                                        )}
+                                    </div>
+
+                                </div>
+                            )
+                        })}
+
                 </div>
 
-             </div>
+            </div>
+
         </div>
         <style jsx global>{`
            .custom-scrollbar::-webkit-scrollbar {
-             width: 0px; /* Hidden Scrollbar as requested for cleaner look */
+             width: 0px;
            }
         `}</style>
     </section>
