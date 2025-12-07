@@ -36,10 +36,9 @@ export function CourseProjects() {
 
   useLayoutEffect(() => {
       const ctx = gsap.context(() => {
-          // Animate the rotation of the gradient backgrounds
           gsap.to('.animated-border-bg', {
               rotation: 360,
-              duration: 4,
+              duration: 3, // Faster rotation
               repeat: -1,
               ease: 'none'
           })
@@ -66,23 +65,23 @@ export function CourseProjects() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {projects.map((project, idx) => (
-                    <div key={project.id} className="group relative bg-transparent h-full flex flex-col rounded-3xl isolate">
+                    <div key={project.id} className="group relative bg-transparent h-full flex flex-col rounded-[24px] isolate transform transition-transform hover:-translate-y-1">
 
-                        {/* 1. Animated Gradient Border (Behind) - THIN 1PX */}
-                        <div className="absolute -inset-[1px] rounded-[25px] overflow-hidden z-0">
-                            {/* The rotating gradient layer */}
+                        {/* 1. Animated Gradient Border (Behind) - THIN 1.5PX for visibility */}
+                        <div className="absolute -inset-[1.5px] rounded-[24px] overflow-hidden z-0 bg-slate-200">
+                             {/* Static fallback background if js fails */}
                             <div
-                                className="animated-border-bg absolute top-[-50%] left-[-50%] w-[200%] h-[200%] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                                className="animated-border-bg absolute top-[-50%] left-[-50%] w-[200%] h-[200%] opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                                 style={{
-                                    background: `conic-gradient(transparent, transparent, transparent, ${project.colors[0]})`
+                                    background: `conic-gradient(from 0deg, transparent 0deg, ${project.colors[0]} 90deg, transparent 180deg)`
                                 }}
                             />
                         </div>
 
-                        {/* 2. Main Card Content (Foreground) - Matches border radius */}
-                        <div className="relative z-10 bg-white h-full p-8 rounded-[24px] border border-slate-200 group-hover:border-transparent transition-colors flex flex-col">
-                            <div className={`w-12 h-12 bg-slate-50 border border-slate-100 flex items-center justify-center mb-6 rounded-2xl`}>
-                                <project.icon className={`w-6 h-6 text-slate-900 transition-colors`} />
+                        {/* 2. Main Card Content (Foreground) */}
+                        <div className="relative z-10 bg-white h-full p-8 rounded-[23px] flex flex-col items-start border border-transparent">
+                            <div className={`w-12 h-12 bg-slate-50 border border-slate-100 flex items-center justify-center mb-6 rounded-2xl group-hover:bg-${project.colors[0]}-50 transition-colors`}>
+                                <project.icon className={`w-6 h-6 text-slate-900`} />
                             </div>
 
                             <h3 className="text-xl font-bold text-slate-900 mb-2">{project.title}</h3>
